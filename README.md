@@ -1,4 +1,4 @@
-# Controle de Camisetas
+# Kick Off
 
 App instalável pelo Safari (PWA) para controlar pacotes de camisetas importadas, custos, imposto rateado, lucro, caixa e valores a receber. Os dados ficam no Supabase, compartilhados entre os membros da loja (cada um com seu login), atualizam ao vivo entre os aparelhos, e o app funciona offline (sincroniza quando a internet volta).
 
