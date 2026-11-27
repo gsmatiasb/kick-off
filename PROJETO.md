@@ -69,27 +69,46 @@ Pedido feito → Em trânsito → No Brasil → Concluído.
 
 ## 3. Funcionalidades por tela
 
-**Resumo**
-- Saudação, data e logo.
-- Cartões: valor em caixa, a receber, capital empatado, lucro realizado e lucro previsto.
-- Pacotes recentes e a lista de camisetas que chegaram e ainda não foram pagas.
+**Em todas as telas**
+- Botão de **olho** (topo e cartão de saldo) para **ocultar valores**: os valores em reais viram "R$ ••••". A preferência fica só no aparelho (localStorage), não vai para o banco.
+- Avatar com as iniciais no canto superior direito, com um ponto colorido que mostra a sincronização. Ao tocar, abre a Conta.
+
+**Início**
+- Saudação com o primeiro nome (vindo da coluna `nome` de `membros`) e a data.
+- Cartão de saldo no estilo "cartão carbono" (textura da marca): valor em caixa, a receber e caixa + a receber.
+- Ações rápidas em círculos: Novo pacote, Entrada, Saída, A receber, Caixa de hoje e Relatórios.
+- Indicadores: capital empatado, lucro realizado, lucro previsto e pacotes em aberto.
+- **Fluxo do mês**: entradas, saídas e resultado do mês atual (todos os movimentos do mês, independente do caixa lançado).
+- Pacotes recentes (com barra de quanto já foi recebido) e camisetas que chegaram e ainda não foram pagas.
 
 **Pacotes**
 - Busca por time, cliente ou nome do pacote; filtro Em aberto / Concluídos / Todos.
+- Cada pacote mostra uma barra do quanto da venda já foi recebido.
 - Dentro do pacote:
-  - situação, valor do PIX, total em dólar, custo de cada dólar, imposto, entrega e observações;
+  - cabeçalho com situação, recebido x vendido, custo total, venda, lucro e **margem**;
+  - situação em **etapas** (Pedido → Trânsito → No Brasil → Concluído), tocando na etapa para mudar;
+  - valor do PIX, total em dólar, custo de cada dólar, imposto, entrega e observações;
   - camisetas com descrição, **versão** (Fan / Player / Retro), tamanho, cliente, preço em US$, valor de venda;
   - cada camiseta mostra custo, venda e lucro em reais, a conta usada e o botão Pago / A receber;
   - ao cadastrar uma camiseta, a tela mostra ao vivo o custo em reais e o lucro;
   - botão "Salvar e adicionar outra" para lançar várias seguidas.
 
 **Financeiro**
-- Valor em caixa, botão "Lançar caixa de hoje", a receber e caixa + a receber.
-- Botões Entrada, Saída e A receber (manual).
-- Aba **Extrato**: todos os movimentos depois do saldo lançado.
+- Cartão de saldo com o botão "Lançar caixa de hoje".
+- Ações rápidas: Entrada, Saída, A receber, Caixa de hoje e Backup (exportar).
+- Indicadores: já chegou e falta receber, venda em trânsito, a receber manual e capital empatado. Fluxo do mês.
+- Aba **Extrato**: movimentos depois do saldo lançado, **agrupados por dia** com o total de cada dia.
 - Aba **A receber**: camisetas não pagas e valores manuais, com o botão "Recebi".
 
-**Conta** (indicador no canto superior direito)
+**Relatórios** (calculados no próprio aparelho, sem gravar nada novo no banco)
+- Período: 6 meses, 12 meses ou tudo.
+- Vendas, lucro (com margem), ticket médio e quanto já foi recebido.
+- Gráfico de **lucro por mês** (passe o mouse ou toque numa barra para ver detalhes).
+- Distribuição **por versão** (Fan / Player / Retro) e **principais clientes**.
+- Tabela mês a mês: pacotes, camisetas, venda, custo, lucro e margem.
+- Os números usam a **data do pedido** de cada pacote.
+
+**Conta** (avatar no topo, ou no rodapé do menu lateral no computador)
 - Estado da sincronização: Ao vivo, Sincronizado, Offline ou Erro.
 - Sincronizar agora, exportar backup, importar backup e sair da conta.
 
@@ -97,14 +116,15 @@ Pedido feito → Em trânsito → No Brasil → Concluído.
 
 ## 4. Design
 
-- Visual de app nativo do iPhone: títulos grandes, listas agrupadas, barra de abas flutuante de vidro, janelas que sobem de baixo, interruptores, controles segmentados.
-- Fundo: **textura cinza** (`img/textura.jpg`, imagem enviada pelo dono) escurecida com uma camada de cerca de 55% de preto e bordas mais escuras.
-- Cartões em cinza translúcido mais claro, para contraste. Botões principais em cinza prateado.
-- Logo **branca** (versão invertida da original preta), em `img/logo.png`.
-- Ícone do app: logo branca sobre a textura escura (`icons/`).
+- Visual "carbono", inspirado em apps de banco digitais: fundo preto (`#09090a`), cartões grafite, tipografia forte e números grandes.
+- **Cartão de saldo** com a textura cinza da marca (`img/textura.jpg`) escurecida e a logo em marca d'água.
+- Botões principais **brancos com texto preto**, em formato de pílula. Ações rápidas em botões circulares.
+- Logo **branca** em `img/logo.png`. Ícone do app: logo branca sobre a textura escura (`icons/`).
 - Cores de estado: verde para lucro e entradas, vermelho para saídas, âmbar para pendente ou no Brasil, azul para em trânsito.
-- Animações ao passar o mouse e ao tocar: brilho que segue o cursor, leve inclinação 3D nos cartões, botões que crescem e encolhem.
 - Etiquetas de versão: Fan prateada, Player dourada, Retro bege.
+- **Responsivo**:
+  - celular: barra de abas fixa embaixo (Início, Pacotes, Financeiro, Relatórios) e janelas que sobem de baixo;
+  - computador (a partir de 1000px): **menu lateral** com a logo, as seções, o botão "Novo pacote" e a conta; conteúdo em colunas (por exemplo, no pacote, dados à esquerda e camisetas à direita).
 
 ---
 
@@ -273,10 +293,10 @@ Existe também uma primeira versão do sistema publicada como página no claude.
 5. Migração para um app instalável pelo Safari (PWA), com dados no Supabase e hospedagem no GitHub Pages.
 6. Dados **compartilhados da loja** com lista de membros: cada pessoa com o próprio login, atualização ao vivo entre os aparelhos.
 7. App renomeado para **Kick Off**, com a logo como ícone.
+8. Novo visual "carbono" inspirado em bancos digitais, layout responsivo com menu lateral no computador, botão de ocultar valores, extrato por dia, fluxo do mês e a aba **Relatórios**. Nada mudou no banco, nas regras de acesso ou na sincronização.
 
 ## 13. Ideias para o futuro
 
 - Mostrar quem fez cada alteração (o dado `atualizado_por` já é gravado).
-- Relatórios por mês: lucro, volume de camisetas, ticket médio.
 - Cadastro de clientes com histórico de pedidos.
 - Filtros por versão (Fan / Player / Retro) e por time.

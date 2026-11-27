@@ -1,5 +1,5 @@
 // Cache do app para abrir sem internet. Ao publicar uma nova versão, aumente o número abaixo.
-const CACHE = "camisetas-v4";
+const CACHE = "camisetas-v5";
 const ARQUIVOS = [
   "./", "./index.html", "./config.js", "./supabase.js", "./manifest.webmanifest",
   "./img/logo.png", "./img/textura.jpg",
